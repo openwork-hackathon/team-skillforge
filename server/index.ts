@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:3000", "https://*.vercel.app"],
+  origin: ["http://localhost:3000", "https://*.vercel.app", "*","https://skill-forge-blond.vercel.app/"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: [

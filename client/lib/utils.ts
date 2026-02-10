@@ -52,9 +52,13 @@ export async function signAuth(signer: ethers.Signer) {
 
 // ─── API helpers ───
 export async function fetchAPI(path: string, options: RequestInit = {}) {
+  const { headers: optHeaders, ...restOptions } = options;
   const res = await fetch(`${API_URL}/api${path}`, {
-    headers: { "Content-Type": "application/json", ...options.headers },
-    ...options,
+    ...restOptions,
+    headers: {
+      "Content-Type": "application/json",
+      ...(optHeaders as Record<string, string>),
+    },
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: "Request failed" }));

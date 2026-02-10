@@ -108,11 +108,11 @@ export default function PublishModal({ isOpen, onClose, onPublished }: Props) {
           <div className="text-5xl mb-4">🔗</div>
           <h3 className="text-lg font-semibold text-white mb-2">Connect Your Wallet</h3>
           <p className="text-sm text-gray-400 mb-6">Connect on Base network to publish skills. Need ≥100K $OPENWORK.</p>
-          <button onClick={connect} disabled={isConnecting} className="rounded-xl bg-forge-600 px-8 py-3 text-sm font-semibold text-white hover:bg-forge-500 transition-all disabled:opacity-50">
+          <button type="button" onClick={connect} disabled={isConnecting} className="rounded-xl bg-forge-600 px-8 py-3 text-sm font-semibold text-white hover:bg-forge-500 transition-all disabled:opacity-50 cursor-pointer">
             {isConnecting ? "Connecting..." : "Connect Wallet"}
           </button>
           <p className="text-xs text-gray-600 mt-4">MetaMask, Coinbase Wallet, or injected wallets</p>
-          <button onClick={handleClose} className="mt-4 text-xs text-gray-500 hover:text-white">Cancel</button>
+          <button type="button" onClick={handleClose} className="mt-4 text-xs text-gray-500 hover:text-white cursor-pointer">Cancel</button>
         </div>
       </div>
     );
@@ -128,7 +128,7 @@ export default function PublishModal({ isOpen, onClose, onPublished }: Props) {
             <h2 className="text-xl font-bold text-white">{step === 3 ? "🎉 Published!" : "Publish a Skill"}</h2>
             {step < 3 && <p className="text-sm text-gray-500 mt-1">Step {step} of 2</p>}
           </div>
-          <button onClick={handleClose} className="text-gray-500 hover:text-white text-2xl leading-none">&times;</button>
+          <button type="button" onClick={handleClose} className="text-gray-500 hover:text-white text-2xl leading-none cursor-pointer">&times;</button>
         </div>
 
         <div className="p-6 space-y-5">
@@ -268,7 +268,7 @@ export default function PublishModal({ isOpen, onClose, onPublished }: Props) {
                   </ul>
                 </div>
               )}
-              <button onClick={handleClose} className="rounded-lg bg-forge-600 px-8 py-2.5 text-sm font-semibold text-white hover:bg-forge-500">Done</button>
+              <button type="button" onClick={handleClose} className="rounded-lg bg-forge-600 px-8 py-2.5 text-sm font-semibold text-white hover:bg-forge-500 cursor-pointer">Done</button>
             </div>
           )}
         </div>
@@ -277,14 +277,14 @@ export default function PublishModal({ isOpen, onClose, onPublished }: Props) {
         {step < 3 && (
           <div className="flex items-center justify-between border-t border-dark-600 p-6">
             {step > 1 ? (
-              <button onClick={() => setStep(step - 1)} className="text-sm text-gray-400 hover:text-white">← Back</button>
+              <button type="button" onClick={() => setStep(step - 1)} className="text-sm text-gray-400 hover:text-white cursor-pointer">← Back</button>
             ) : <div />}
             {step === 1 ? (
-              <button onClick={goToStep2} className="rounded-lg bg-forge-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-forge-500">
+              <button type="button" onClick={goToStep2} className="rounded-lg bg-forge-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-forge-500 cursor-pointer">
                 Next: Content & Pricing →
               </button>
             ) : (
-              <button onClick={handlePublish} disabled={loading} className="rounded-lg bg-claw-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-claw-500 disabled:opacity-50 flex items-center gap-2">
+              <button type="button" onClick={handlePublish} disabled={loading} className="rounded-lg bg-claw-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-claw-500 disabled:opacity-50 flex items-center gap-2 cursor-pointer">
                 {loading ? (
                   <><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>Publishing...</>
                 ) : "🦞 Publish Skill"}

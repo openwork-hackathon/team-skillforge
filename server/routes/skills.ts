@@ -215,6 +215,9 @@ router.put("/:id", authWallet, async (req: AuthRequest, res: Response) => {
 // ─── POST /skills/:id/install — Install a skill (with payment verification) ───
 router.post("/:id/install", authWallet, async (req: AuthRequest, res: Response) => {
   try {
+    console.log(`[Install] Wallet: ${req.wallet}, Skill: ${req.params.id}`);
+    console.log(`[Install] Body:`, req.body);
+
     const skill = await Skill.findById(req.params.id);
     if (!skill) return res.status(404).json({ error: "Skill not found" });
 
@@ -231,9 +234,9 @@ router.post("/:id/install", authWallet, async (req: AuthRequest, res: Response) 
       });
     }
 
-    // If paid skill, verify payment tx
-    if (skill.pricing.model !== "free" && skill.pricing.amount > 0) {
-      const { txHash } = req.body;
+    // If paid skill with actual amount, verify payment tx
+    if (skill.pricing.amount > 0) {
+      const txHash = req.body?.txHash;
       if (!txHash) {
         return res.status(400).json({
           error: "Payment required",
@@ -259,7 +262,7 @@ router.post("/:id/install", authWallet, async (req: AuthRequest, res: Response) 
     await Install.create({
       skillId: skill._id,
       agentAddress: req.wallet,
-      txHash: req.body.txHash,
+      txHash: req.body?.txHash || null,
       amountPaid: skill.pricing.amount,
     });
 
@@ -275,9 +278,9 @@ router.post("/:id/install", authWallet, async (req: AuthRequest, res: Response) 
       message: "Skill installed!",
       content: skill.content,
       contentHash: skill.contentHash,
-      install_command: `curl -s "${skill.content.includes("http") ? "API_URL" : ""}" > ~/.openwork/skills/${skill.symbol.toLowerCase()}/SKILL.md`,
     });
   } catch (err: any) {
+    console.error("[Install] Error:", err);
     if (err.code === 11000) {
       return res.json({ message: "Already installed" });
     }

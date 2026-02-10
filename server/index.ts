@@ -10,8 +10,28 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-app.use(cors({ origin: ["http://localhost:3000", "https://*.vercel.app"], credentials: true }));
+app.use(cors({
+  origin: ["http://localhost:3000", "https://*.vercel.app"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "x-wallet-address",
+    "x-signature",
+    "x-timestamp",
+  ],
+}));
 app.use(express.json({ limit: "5mb" }));
+app.use(express.text({ type: "text/*", limit: "5mb" }));
+
+// Debug: log all POST/PUT requests body
+app.use((req, _res, next) => {
+  if (req.method === "POST" || req.method === "PUT") {
+    console.log(`[${req.method}] ${req.path} Content-Type: ${req.headers["content-type"]}`);
+    console.log(`  Body type: ${typeof req.body}, keys: ${req.body ? Object.keys(req.body) : "null"}`);
+  }
+  next();
+});
 
 // Routes
 app.use("/api/skills", skillsRouter);
